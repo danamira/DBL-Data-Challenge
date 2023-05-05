@@ -1,6 +1,45 @@
 import json
-from typing import Generator, Dict, List
+from typing import Generator, Dict, List, Optional
 from pathlib import Path
+
+def json_cleaner(data: Dict) -> Dict:
+    """
+    Clean a JSON object by keeping only the specified keys.
+
+    :param data: JSON object to clean
+    :return: Function to clean a JSON object
+    """
+    status_keys = ['id', 
+            'text', 
+            'in_reply_to_status_id', 
+            'timestamp_ms'
+            ]
+    
+    user_info_keys = ['id',
+                      'verified',
+                      'followers_count',
+                      'statuses_count',
+                      ]
+        
+    output = {k: v for k, v in data.items() if k in status_keys}
+    user_info = {k: v for k, v in data['user'].items() if k in user_info_keys}
+
+    if 'extended_tweet' in data:
+        text = data['extended_tweet']['full_text']
+    else:
+        # Removing the URLs
+        text = ' '.join(data['text'].split('https://')[:-1])
+
+    extended_tweet = {'text': text}
+
+    mentions = [mention['id'] for mention in data['entities']['user_mentions']]
+    mentions_dict = {'mentions': mentions}
+
+    output.update(user_info)
+    output.update(extended_tweet)
+    output.update(mentions_dict)
+
+    return output
 
 def json_object_reader(file_path: Path) -> Generator:
     """
@@ -31,7 +70,7 @@ def create_json(file_path: Path) -> None:
     :return: None
     """
     with open(file_path, 'w') as f:
-        f.write('[ \n')
+        f.write('[\n')
 
 def json_append(data: Dict, file_path: Path) -> None:
     """
@@ -54,5 +93,4 @@ def json_close(file_path: Path) -> None:
     """
     with open(file_path, 'a') as f:
         f.write(']')
-
-
+        
