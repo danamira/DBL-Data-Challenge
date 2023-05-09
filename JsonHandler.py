@@ -60,7 +60,15 @@ def json_file_reader(file_path: Path) -> List:
     :return: List of JSON objects
     """
     with open(file_path) as f:
-        return [json.loads(line) for line in f]
+        result=[]
+        lineCounter=0
+        for line in f:
+            try:
+                result.append(json.loads(line))
+            except:
+                print(lineCounter,line)
+            lineCounter+=1
+        return result
 
 def create_json(file_path: Path) -> None:
     """

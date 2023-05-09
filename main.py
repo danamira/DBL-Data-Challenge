@@ -1,11 +1,12 @@
 import sys
-
 import mysql.connector
 import JsonHandler
 import database.connect
 from database.connect import getConnection
+import os
 
-dataFiles = ['data/airlines-1558527599826.json']
+
+dataFiles = ["data/"+file for file in os.listdir('data')]
 
 try:
     connection = getConnection()
@@ -25,6 +26,7 @@ if (len(sys.argv) <= 1):
 command = sys.argv[1]
 if (command == 'make:tables'):
     try:
+        
         connection.cursor().execute(database.connect.makeTablesQuery())
         print('✅ Tweets table created successfully.')
     except mysql.connector.Error as err:
@@ -32,6 +34,7 @@ if (command == 'make:tables'):
         exit(1)
 if (command == 'insert:tweets'):
     for filePath in dataFiles:
+        print("ℹ️ Processing: ",filePath)
         for tweet in JsonHandler.json_file_reader(filePath):
             insertQuery = "INSERT INTO `tweets` (`id`, `text`, `in_reply_to`, `timestamp`, `user_mentions`, `user_id`, `user_verified`, `user_followers_count`, `user_tweets_count`) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s);"
             try:
@@ -44,15 +47,18 @@ if (command == 'insert:tweets'):
                                                                      int(tweet['user']['verified']),
                                                                      tweet['user']['followers_count'],
                                                                      tweet['user']['statuses_count']))
-
                 else:
                     print("⚠️ Weird record:", tweet)
             except mysql.connector.Error as err:
-                print("✖️ Error while adding record: {}".format(err))
-                print("Tried to execute: ", insertQuery)
-                exit(1)
+                print("⚠️ Error while adding record: {}".format(err))
+                # print('Tweet object id: ',tweet['id'])
+                # print("Tried to execute: ", insertQuery)
         connection.commit()
         print('✅ `{}` content was successfully appended to tweets table.'.format(filePath))
 
 if command == 'check:connection':
     print("✅ The connection seems to be valid:", connection)
+if command=="drop:tables":
+    sql="DROP TABLE tweets"
+    connection.cursor().execute(sql)
+    connection.commit()

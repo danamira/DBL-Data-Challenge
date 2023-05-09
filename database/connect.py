@@ -3,6 +3,7 @@ import config.env
 
 
 def getConnection():
+    print(config.env.getConfig('DB_HOST'))
     db = mysql.connector.connect(host=config.env.getConfig('DB_HOST'), user=config.env.getConfig('DB_USERNAME'),
                                  password=config.env.getConfig('DB_PASSWORD'),database=config.env.getConfig('DB_DATABASE'))
     return db
