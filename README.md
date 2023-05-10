@@ -5,7 +5,7 @@ Here you can find the code used to store, organize, extract and analyze informat
 
 ## ⚙️ Getting Started
 1. Clone the repository on your machine using `git clone` command. Use `git pull` to fetch the latest updates.
-2. In the root directory of the project `.env.example` to `.env`. This can be done by the bash command `mv .env.example .env`. Make sure you update the database credentials in `.env` with the correct credentials of the database engine on your machine. Try `nano .env` for this.
+2. In the root directory of the project rename `.env.example` to `.env`. This can be done by the bash command `mv .env.example .env`. Make sure you update the database credentials in `.env` with the correct credentials of the database engine on your machine. Try `nano .env` for this.
 3. Make sure all of the dependencies of the projects are satisfied. Use `pip install -r requirements.txt` to install the dependencies.
 4. Once in project's root directory, try `python main.py make:tables` in order to create the table used for storing tweets.
 5. Use the `dataFiles` variable in `main.py` to configure the JSON files which their content needs to inserted to the database.
