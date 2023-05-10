@@ -32,6 +32,15 @@ if (command == 'make:tables'):
     except mysql.connector.Error as err:
         print("Error while creating tweets table: {}".format(err))
         exit(1)
+if(command=="count:tweets"):
+    counter=0
+    for filePath in dataFiles:
+        print('ℹ️ Processing: ',filePath)
+        with open(filePath) as f:
+            for line in f:
+                if line[0:8]!="Exceeded":
+                    counter+=1                    
+    print("💡 total number of tweet objects: ",counter)
 if (command == 'insert:tweets'):
     for filePath in dataFiles:
         print("ℹ️ Processing: ",filePath)
