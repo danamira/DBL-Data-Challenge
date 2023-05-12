@@ -42,3 +42,13 @@ def drop_tables(connection):
     sql="DROP TABLE tweets"
     connection.cursor().execute(sql)
     connection.commit()
+
+def count_tweets(connection, dataFiles):
+    counter=0
+    for filePath in dataFiles:
+        print('ℹ️ Processing: ',filePath)
+        with open(filePath) as f:
+            for line in f:
+                if line[0:8]!="Exceeded":
+                    counter+=1                    
+    print("💡 total number of tweet objects: ",counter)
