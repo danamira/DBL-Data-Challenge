@@ -20,7 +20,9 @@ if (len(sys.argv) <= 1):
     print(
         "2. `python main.py insert:records` | insert JSON object tweets as record in the MySQL database. Configure `dataFiles` variables before using.")
     quit()
+
 command = sys.argv[1]
+
 if (command == 'make:tables'):
     DB_fun.make_tables(connection)
 
