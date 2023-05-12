@@ -24,6 +24,8 @@ def json_cleaner(data: Dict) -> Dict:
         
     output = {k: v for k, v in data.items() if k in status_keys}
     user_info = {k: v for k, v in data['user'].items() if k in user_info_keys}
+    # rename id to user_id
+    user_info['user_id'] = user_info.pop('id')
 
     if 'extended_tweet' in data:
         text = data['extended_tweet']['full_text']
@@ -102,4 +104,3 @@ def json_close(file_path: Path) -> None:
     """
     with open(file_path, 'a') as f:
         f.write(']')
-        
