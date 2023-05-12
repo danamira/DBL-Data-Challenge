@@ -12,7 +12,8 @@ def json_cleaner(data: Dict) -> Dict:
     status_keys = ['id', 
             'text', 
             'in_reply_to_status_id', 
-            'timestamp_ms'
+            'timestamp_ms',
+            'coordinates',
             ]
     
     user_info_keys = ['id',
