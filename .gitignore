@@ -6,3 +6,4 @@
 /__pycache__
 /db/__pycache__
 /config/__pycache__
+visualization.py

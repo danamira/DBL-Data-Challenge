@@ -23,10 +23,12 @@ if (len(sys.argv) <= 1):
 command = sys.argv[1]
 if (command == 'make:tables'):
     DB_fun.make_tables(connection)
+
+if(command=="count:tweets"):
+    DB_fun.count_tweets(connection,dataFiles)
 if (command == 'insert:tweets'):
     DB_fun.insert_tweets(connection, dataFiles)
 if command == 'check:connection':
     DB_fun.connection_valid(connection)
 if command=="drop:tables":
     DB_fun.drop_tables(connection)
-
