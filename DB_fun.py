@@ -14,7 +14,8 @@ def make_tables(connection):
 def insert_tweets(connection, dataFiles):
     for file_path in dataFiles:
         print("ℹ️ Processing: ",file_path)
-        for tweet in JsonHandler.json_file_reader(file_path):
+        data_set = JsonHandler.json_file_reader(file_path)
+        for tweet in data_set:
             insertQuery = "INSERT INTO `tweets` (`id`, `text`, `in_reply_to`, `timestamp`, `user_mentions`, `user_id`, `user_verified`, `user_followers_count`, `user_tweets_count`) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s);"
             try:
                 if "id" in tweet:
