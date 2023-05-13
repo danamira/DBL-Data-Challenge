@@ -43,8 +43,10 @@ def json_cleaner(data: Dict) -> Dict:
     output.update(mentions_dict)
 
     # sets potential None values to NULL
-    if output['in_reply_to_status_id'] is None:
-        output['in_reply_to_status_id'] = 'NULL'
+    null_keys = ['in_reply_to_status_id', 'coordinates']
+    for key in null_keys:
+        if output[key] is None:
+            output[key] = 'NULL'
 
     return output
 

@@ -35,7 +35,8 @@ def insert_tweets(connection: mysql.connector.connect, dataFiles: List[Path]) ->
         print("ℹ️ Processing: ",file_path)
         data_set = JsonHandler.json_object_reader(file_path)
         for tweet in data_set:
-            values = tuple(tweet.values())
+            cleaned_tweet = JsonHandler.json_cleaner(tweet)
+            values = tuple(cleaned_tweet.values())
             insertQuery = f"INSERT INTO `tweets` {keys} VALUES {values};"
             try:
                 if "id" in tweet:
