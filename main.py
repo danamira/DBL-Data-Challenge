@@ -3,7 +3,6 @@ import DB_fun
 from database.connect import getConnection
 import os
 
-
 dataFiles = ["data/"+file for file in os.listdir('data')]
 
 try:
