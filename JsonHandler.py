@@ -27,12 +27,12 @@ def json_cleaner(data: Dict) -> Dict:
     # rename id to user_id
     user_info['user_id'] = user_info.pop('id')
 
+    # gets the full text
     if 'extended_tweet' in data:
         text = data['extended_tweet']['full_text']
     else:
         # Removing the URLs
         text = ' '.join(data['text'].split('https://')[:-1])
-
     extended_tweet = {'text': text}
 
     mentions = [mention['id'] for mention in data['entities']['user_mentions']]
@@ -41,6 +41,12 @@ def json_cleaner(data: Dict) -> Dict:
     output.update(user_info)
     output.update(extended_tweet)
     output.update(mentions_dict)
+
+    # sets potential None values to NULL
+    null_keys = ['in_reply_to_status_id', 'coordinates']
+    for key in null_keys:
+        if output[key] is None:
+            output[key] = 'NULL'
 
     return output
 
@@ -104,3 +110,4 @@ def json_close(file_path: Path) -> None:
     """
     with open(file_path, 'a') as f:
         f.write(']')
+        
