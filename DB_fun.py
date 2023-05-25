@@ -49,9 +49,6 @@ def insert_tweets(connection: mysql.connector.connect, dataFiles: List[Path]) ->
                 values = ', '.join("'" + str(x).replace('/', '_') + "'" for x in mydict.values())  
                 insertQuery = "INSERT INTO `tweets` ( %s ) VALUES ( %s )" % (columns, values)
 
-            except:
-                raise
-            try:
                 if "id" in tweet:
                     exec = connection.cursor().execute(insertQuery)
                     print("✅ Record added successfully.")
@@ -61,6 +58,10 @@ def insert_tweets(connection: mysql.connector.connect, dataFiles: List[Path]) ->
                 print(f"⚠️ Error while adding record: {err}")
                 # print('Tweet object id: ',tweet['id'])
                 # print("Tried to execute: ", insertQuery)
+                pass
+            except Exception as e:
+                print("⚠️ Weird record:", tweet)
+                print(e)
                 pass
         connection.commit()
         print(f"✅ `{file_path}` content was successfully appended to tweets table.")
