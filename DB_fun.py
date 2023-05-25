@@ -37,22 +37,20 @@ def insert_tweets(connection: mysql.connector.connect, dataFiles: List[Path]) ->
                 if cleaned_tweet is None:
                     continue
                 values = tuple(cleaned_tweet.values())
-                
                 mydict = cleaned_tweet
 
                 columns = ', '.join("`" + str(x).replace('/', '_') + "`" for x in mydict.keys())
                 values = ', '.join("'" + str(x).replace('/', '_').replace("'", "") + "'" for x in mydict.values())
                 insertQuery = "INSERT INTO `tweets` ( %s ) VALUES ( %s )" % (columns, values)
 
-                if "id" in tweet:
-                    exec = connection.cursor().execute(insertQuery)
-                    print("✅ Record added successfully.")
-                else:
-                    print("⚠️ Weird record:", tweet)
+                exec = connection.cursor().execute(insertQuery)
+                print("✅ Record added successfully.")
             except mysql.connector.Error as err:
                 print(f"⚠️ Error while adding record: {err}")
                 # print('Tweet object id: ',tweet['id'])
                 # print("Tried to execute: ", insertQuery)
+                print("Tried to execute: ", exec)
+                print("tweet: ", tweet)
                 pass
             except Exception as e:
                 print("⚠️ Weird record:", tweet)
