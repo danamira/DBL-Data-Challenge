@@ -23,13 +23,15 @@ def makeTablesQuery() -> str:
         CREATE TABLE `dbl`.`tweets` 
         (`id` BIGINT NULL ,
         `text` TEXT NULL ,
-        `in_reply_to` BIGINT NULL , 
-        `timestamp` BIGINT NULL , 
-        `user_mentions` TEXT NULL , 
+        `language` TEXT NULL ,
+        `in_reply_to_status_id` BIGINT NULL , 
+        `timestamp_ms` BIGINT NULL , 
+        `coordinates` TEXT NULL ,
+        `mentions` TEXT NULL , 
         `user_id` BIGINT NULL , 
-        `user_verified` BOOLEAN NULL , 
-        `user_followers_count` INT NULL , 
-        `user_tweets_count` INT NULL , 
+        `verified` BOOLEAN NULL , 
+        `followers_count` INT NULL , 
+        `statusses_count` INT NULL , 
         PRIMARY KEY (`id`)) ENGINE = InnoDB;
         """
     return query
