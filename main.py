@@ -18,7 +18,7 @@ if (len(sys.argv) <= 1):
     print("ℹ️ Use one of the following commands:")
     print("1. `python main.py make:tables` | create the tweets table.")
     print(
-        "2. `python main.py insert:records` | insert JSON object tweets as record in the MySQL database. Configure `dataFiles` variables before using.")
+        "2. `python main.py insert:tweets` | insert JSON object tweets as record in the MySQL database. Configure `dataFiles` variables before using.")
     quit()
 
 command = sys.argv[1]

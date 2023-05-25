@@ -28,7 +28,7 @@ def json_cleaner(data: Dict) -> Dict:
     user_info['user_id'] = user_info.pop('id')
 
     # gets the full text
-    if 'extended_tweet' in data:
+    if data['extended_tweet']:
         text = data['extended_tweet']['full_text']
     else:
         # Removing the URLs

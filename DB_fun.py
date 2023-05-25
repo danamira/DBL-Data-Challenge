@@ -29,24 +29,33 @@ def insert_tweets(connection: mysql.connector.connect, dataFiles: List[Path]) ->
     """
     # gets the keys of the first tweet object
     first_data = JsonHandler.json_object_reader(dataFiles[0])
-    keys = tuple(first_data.__next__().keys())
+    first_tweet = first_data.__next__()
+    cleaned_first_tweet = JsonHandler.json_cleaner(first_tweet)
+    keys = tuple(cleaned_first_tweet.keys())
 
     for file_path in dataFiles:
         print("ℹ️ Processing: ",file_path)
         data_set = JsonHandler.json_object_reader(file_path)
         for tweet in data_set:
-            cleaned_tweet = JsonHandler.json_cleaner(tweet)
-            values = tuple(cleaned_tweet.values())
-            insertQuery = f"INSERT INTO `tweets` {keys} VALUES {values};"
+            #print(tweet)
+            try:
+                cleaned_tweet = JsonHandler.json_cleaner(tweet)
+                values = tuple(cleaned_tweet.values())
+                insertQuery = f"INSERT INTO `tweets` {keys} VALUES {values};"
+                print(insertQuery)
+            except:
+                raise
             try:
                 if "id" in tweet:
                     exec = connection.cursor().execute(insertQuery)
+                    print("✅ Record added successfully.")
                 else:
                     print("⚠️ Weird record:", tweet)
             except mysql.connector.Error as err:
                 print(f"⚠️ Error while adding record: {err}")
                 # print('Tweet object id: ',tweet['id'])
                 # print("Tried to execute: ", insertQuery)
+                pass
         connection.commit()
         print(f"✅ `{file_path}` content was successfully appended to tweets table.")
 
