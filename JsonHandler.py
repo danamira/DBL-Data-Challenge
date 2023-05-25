@@ -1,6 +1,7 @@
 import json
 from typing import Generator, Dict, List, Optional
 from pathlib import Path
+import re
 from analysis import detect_lang
 
 def json_cleaner(data: Dict) -> Dict:
@@ -35,8 +36,13 @@ def json_cleaner(data: Dict) -> Dict:
     if 'extended_tweet' in data.keys():
         text = data['extended_tweet']['full_text']
     else:
-        # Removing the URLs
-        text = ' '.join(data['text'].split('https://')[:-1])
+        text = data['text']
+
+    # remove all urls
+    re.sub(r'http\S+', 'http', data['text'])
+
+    if not text:
+        print(data)
 
     language = detect_lang(text)
     extended_tweet = {'text': text, 'language': language}
