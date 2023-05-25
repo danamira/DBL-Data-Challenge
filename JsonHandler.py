@@ -17,6 +17,16 @@ airlines_list = ['airfrance',
                 'virginatlantic',
                 ]
 
+languages_list = ['ar',
+                'en',
+                'fr',
+                'pt',
+                'sp',
+                'it'
+                'de'
+                'hi',
+                ]
+
 def json_cleaner(data: Dict) -> Dict:
     """
     Clean a JSON object by keeping only the specified keys.
@@ -36,7 +46,20 @@ def json_cleaner(data: Dict) -> Dict:
                       'followers_count',
                       'statuses_count',
                       ]
-        
+    
+        # gets the full text
+    if 'extended_tweet' in data.keys():
+        text = data['extended_tweet']['full_text']
+    else:
+        text = data['text']
+
+    language = detect_lang(text)
+    if language != 'en':
+        return None
+
+    # remove all urls
+    re.sub(r'http\S+', 'http', data['text'])
+    
     output = {k: v for k, v in data.items() if k in status_keys}
     user_info = {k: v for k, v in data['user'].items() if k in user_info_keys}
     # rename id to user_id
@@ -45,19 +68,6 @@ def json_cleaner(data: Dict) -> Dict:
     mentions = [mention['id'] for mention in data['entities']['user_mentions']]
     mentions_dict = {'mentions': mentions}
 
-    # gets the full text
-    if 'extended_tweet' in data.keys():
-        text = data['extended_tweet']['full_text']
-    else:
-        text = data['text']
-
-    # remove all urls
-    re.sub(r'http\S+', 'http', data['text'])
-
-    if not text:
-        print(data)
-
-    language = detect_lang(text)
     airlines = find_airlines(text, airlines_list)
     extended_tweet = {'text': text, 'language': language, 'airlines': airlines}
 

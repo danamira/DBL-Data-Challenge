@@ -27,12 +27,6 @@ def insert_tweets(connection: mysql.connector.connect, dataFiles: List[Path]) ->
     :param dataFiles: List of JSON files
     :return: None
     """
-    # gets the keys of the first tweet object
-    first_data = JsonHandler.json_object_reader(dataFiles[0])
-    first_tweet = first_data.__next__()
-    cleaned_first_tweet = JsonHandler.json_cleaner(first_tweet)
-    keys = tuple(cleaned_first_tweet.keys())
-
     for file_path in dataFiles:
         print("ℹ️ Processing: ",file_path)
         data_set = JsonHandler.json_object_reader(file_path)
@@ -40,6 +34,8 @@ def insert_tweets(connection: mysql.connector.connect, dataFiles: List[Path]) ->
             #print(tweet)
             try:
                 cleaned_tweet = JsonHandler.json_cleaner(tweet)
+                if cleaned_tweet is None:
+                    continue
                 values = tuple(cleaned_tweet.values())
                 
                 mydict = cleaned_tweet
