@@ -54,12 +54,12 @@ def json_cleaner(data: Dict) -> Dict:
         text = data['text']
 
     language = detect_lang(text)
-    if language != 'en':
+    if language is not in languages_list:
         return None
 
     # remove all urls
     re.sub(r'http\S+', 'http', data['text'])
-    
+
     output = {k: v for k, v in data.items() if k in status_keys}
     user_info = {k: v for k, v in data['user'].items() if k in user_info_keys}
     # rename id to user_id
