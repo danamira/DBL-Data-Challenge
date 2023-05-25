@@ -41,8 +41,14 @@ def insert_tweets(connection: mysql.connector.connect, dataFiles: List[Path]) ->
             try:
                 cleaned_tweet = JsonHandler.json_cleaner(tweet)
                 values = tuple(cleaned_tweet.values())
-                insertQuery = f"INSERT INTO `tweets` {keys} VALUES {values};"
-                print(insertQuery)
+                
+                mydict = cleaned_tweet
+
+
+                columns = ', '.join("`" + str(x).replace('/', '_') + "`" for x in mydict.keys())
+                values = ', '.join("'" + str(x).replace('/', '_') + "'" for x in mydict.values())  
+                insertQuery = "INSERT INTO `tweets` ( %s ) VALUES ( %s )" % (columns, values)
+
             except:
                 raise
             try:

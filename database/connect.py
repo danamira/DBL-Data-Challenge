@@ -23,15 +23,15 @@ def makeTablesQuery() -> str:
         CREATE TABLE `{config.env.getConfig('DB_DATABASE')}`.`tweets` 
         (`id` BIGINT NULL ,
         `text` TEXT NULL ,
-        `language` TEXT NULL ,
         `in_reply_to_status_id` BIGINT NULL , 
-        `timestamp_ms` BIGINT NULL , 
         `coordinates` TEXT NULL ,
-        `mentions` TEXT NULL , 
-        `user_id` BIGINT NULL , 
-        `verified` BOOLEAN NULL , 
-        `followers_count` INT NULL , 
-        `statusses_count` INT NULL , 
+        `timestamp_ms` BIGINT NULL , 
+        `verified` BOOLEAN NULL ,
+        `followers_count` INT NULL ,
+        `statuses_count` INT NULL ,
+        `user_id` BIGINT NULL ,
+        `language` VARCHAR(3) NULL ,
+        `mentions` TEXT NULL ,
         PRIMARY KEY (`id`)) ENGINE = InnoDB;
         """
     return query

@@ -32,7 +32,7 @@ def json_cleaner(data: Dict) -> Dict:
     mentions_dict = {'mentions': mentions}
 
     # gets the full text
-    if data['extended_tweet']:
+    if 'extended_tweet' in data.keys():
         text = data['extended_tweet']['full_text']
     else:
         # Removing the URLs
