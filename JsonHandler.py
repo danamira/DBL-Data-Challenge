@@ -1,6 +1,7 @@
 import json
 from typing import Generator, Dict, List, Optional
 from pathlib import Path
+from analysis import detect_lang
 
 def json_cleaner(data: Dict) -> Dict:
     """
@@ -27,16 +28,18 @@ def json_cleaner(data: Dict) -> Dict:
     # rename id to user_id
     user_info['user_id'] = user_info.pop('id')
 
+    mentions = [mention['id'] for mention in data['entities']['user_mentions']]
+    mentions_dict = {'mentions': mentions}
+
     # gets the full text
     if data['extended_tweet']:
         text = data['extended_tweet']['full_text']
     else:
         # Removing the URLs
         text = ' '.join(data['text'].split('https://')[:-1])
-    extended_tweet = {'text': text}
 
-    mentions = [mention['id'] for mention in data['entities']['user_mentions']]
-    mentions_dict = {'mentions': mentions}
+    language = detect_lang(text)
+    extended_tweet = {'text': text, 'language': language}
 
     output.update(user_info)
     output.update(extended_tweet)
@@ -110,4 +113,3 @@ def json_close(file_path: Path) -> None:
     """
     with open(file_path, 'a') as f:
         f.write(']')
-        

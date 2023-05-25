@@ -1,10 +1,13 @@
 import sys
 import DB_fun
+import JsonHandler
+from pathlib import Path
 from database.connect import getConnection
 import os
 
 
-dataFiles = ["data/"+file for file in os.listdir('data')]
+dataFiles = [Path("data/"+file) for file in os.listdir('data')]
+
 
 try:
     connection = getConnection()
