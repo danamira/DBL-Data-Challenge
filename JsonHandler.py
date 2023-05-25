@@ -4,6 +4,19 @@ from pathlib import Path
 import re
 from analysis import detect_lang
 
+airlines_list = ['airfrance', 
+                'britishairways',
+                'easyjet',
+                'emirates',
+                'klm',
+                'lufthansa',
+                'qatarairways',
+                'ryanair',
+                'singaporeair',
+                'turkishairlines',
+                'virginatlantic',
+                ]
+
 def json_cleaner(data: Dict) -> Dict:
     """
     Clean a JSON object by keeping only the specified keys.
@@ -45,7 +58,8 @@ def json_cleaner(data: Dict) -> Dict:
         print(data)
 
     language = detect_lang(text)
-    extended_tweet = {'text': text, 'language': language}
+    airlines = find_airlines(text, airlines_list)
+    extended_tweet = {'text': text, 'language': language, 'airlines': airlines}
 
     output.update(user_info)
     output.update(extended_tweet)
@@ -119,3 +133,14 @@ def json_close(file_path: Path) -> None:
     """
     with open(file_path, 'a') as f:
         f.write(']')
+
+def find_airlines(text, airlines):
+    """
+    Find airline mentions in a tweet.
+
+    :param text: Text of tweet
+    :param airlines: List of airline names
+    :return: List of airline mentions
+    """
+    lowercase_text = text.lower()
+    return [airline for airline in airlines if airline in lowercase_text]

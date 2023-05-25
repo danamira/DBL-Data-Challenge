@@ -32,6 +32,7 @@ def makeTablesQuery() -> str:
         `user_id` BIGINT NULL ,
         `language` VARCHAR(3) NULL ,
         `mentions` TEXT NULL ,
+        `airlines` TEXT NULL ,
         PRIMARY KEY (`id`)) ENGINE = InnoDB;
         """
     return query
