@@ -19,8 +19,8 @@ def makeTablesQuery() -> str:
     
     :return: The query to create the tweets table.
     """
-    query = """
-        CREATE TABLE `dbl`.`tweets` 
+    query = f"""
+        CREATE TABLE `{config.env.getConfig('DB_DATABASE')}`.`tweets` 
         (`id` BIGINT NULL ,
         `text` TEXT NULL ,
         `in_reply_to` BIGINT NULL , 
