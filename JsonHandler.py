@@ -66,7 +66,7 @@ def json_cleaner(data: Dict) -> Dict:
         text = data['text']
 
     language = detect_lang(text)
-    if language is not in languages_list:
+    if language not in languages_list:
         return None
 
     # remove all urls

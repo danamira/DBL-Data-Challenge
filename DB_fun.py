@@ -40,9 +40,8 @@ def insert_tweets(connection: mysql.connector.connect, dataFiles: List[Path]) ->
                 
                 mydict = cleaned_tweet
 
-
                 columns = ', '.join("`" + str(x).replace('/', '_') + "`" for x in mydict.keys())
-                values = ', '.join("'" + str(x).replace('/', '_').replace("'", "") + "'" for x in mydict.values())  
+                values = ', '.join("'" + str(x).replace('/', '_').replace("'", "") + "'" for x in mydict.values())
                 insertQuery = "INSERT INTO `tweets` ( %s ) VALUES ( %s )" % (columns, values)
 
                 if "id" in tweet:
