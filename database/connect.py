@@ -2,7 +2,6 @@ import mysql.connector
 import config.env
 
 
-<<<<<<< Updated upstream
 def getConnection() -> mysql.connector.connection.MySQLConnection:
     """
     Gets a connection to the MySQL database.
@@ -11,12 +10,6 @@ def getConnection() -> mysql.connector.connection.MySQLConnection:
     """
     db = mysql.connector.connect(host=config.env.getConfig('DB_HOST'), user=config.env.getConfig('DB_USERNAME'),
                                  password=config.env.getConfig('DB_PASSWORD'),database=config.env.getConfig('DB_DATABASE'))
-=======
-def getConnection():
-    print(config.env.getConfig('DB_HOST'))
-    db = mysql.connector.connect(host='localhost', user='root',
-                                 password='Iam1GlobalCitizen!',database='dbl')
->>>>>>> Stashed changes
     return db
 
 
