@@ -19,7 +19,7 @@ def make_tables(connection: mysql.connector.connect) -> None:
         print(f"Error while creating tweets table: {err}")
         raise
 
-def insert_tweets(connection: mysql.connector.connect, dataFiles: List[Path]) -> None:
+def insert_tweets(connection: mysql.connector.connect, dataFiles: List[Path],silent=True) -> None:
     """
     Insert tweets into the database.
 
@@ -44,7 +44,8 @@ def insert_tweets(connection: mysql.connector.connect, dataFiles: List[Path]) ->
                 insertQuery = "INSERT INTO `tweets` ( %s ) VALUES ( %s )" % (columns, values)
 
                 exec = connection.cursor().execute(insertQuery)
-                print("✅ Record added successfully.")
+                if not silent:
+                    print("✅ Record added successfully.")
             except mysql.connector.Error as err:
                 print(f"⚠️ Error while adding record: {err}")
                 # print('Tweet object id: ',tweet['id'])

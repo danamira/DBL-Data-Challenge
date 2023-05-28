@@ -21,7 +21,7 @@ def makeTablesQuery() -> str:
     """
     query = f"""
         CREATE TABLE `{config.env.getConfig('DB_DATABASE')}`.`tweets` 
-        (`id` BIGINT NULL ,
+        (`id` BIGINT ,
         `text` TEXT NULL ,
         `in_reply_to_status_id` BIGINT NULL , 
         `coordinates` TEXT NULL ,

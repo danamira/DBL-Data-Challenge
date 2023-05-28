@@ -2,7 +2,6 @@ import json
 from typing import Generator, Dict, List, Optional
 from pathlib import Path
 import re
-from analysis import detect_lang
 
 airlines_list = ['klm',
                 'airfrance',
