@@ -1,5 +1,6 @@
 import json
 from typing import Generator, Dict, List, Optional
+from langdetect import detect
 from pathlib import Path
 import re
 
@@ -64,7 +65,7 @@ def json_cleaner(data: Dict) -> Dict:
     else:
         text = data['text']
 
-    language = detect_lang(text)
+    language = detect(text)
     if language not in languages_list:
         return None
 

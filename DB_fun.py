@@ -1,6 +1,8 @@
 import mysql.connector
 import JsonHandler
 import database.connect
+from time import process_time
+import datetime
 from typing import List
 from pathlib import Path
 
@@ -27,38 +29,52 @@ def insert_tweets(connection: mysql.connector.connect, dataFiles: List[Path],sil
     :param dataFiles: List of JSON files
     :return: None
     """
-    for file_path in dataFiles:
+    acc_time=0
+    for counter,file_path in enumerate(dataFiles):
         print("ℹ️ Processing: ",file_path)
+        t_start = process_time() 
         data_set = JsonHandler.json_object_reader(file_path)
-        for tweet in data_set:
-            #print(tweet)
-            try:
-                cleaned_tweet = JsonHandler.json_cleaner(tweet)
-                if cleaned_tweet is None:
-                    continue
-                values = tuple(cleaned_tweet.values())
-                mydict = cleaned_tweet
+        errorCounter=0
+        try:
+            for tweet in data_set:
+                try:
+                    cleaned_tweet = JsonHandler.json_cleaner(tweet)
+                    if cleaned_tweet is None:
+                        continue
+                    values = tuple(cleaned_tweet.values())
+                    mydict = cleaned_tweet
 
-                columns = ', '.join("`" + str(x).replace('/', '_') + "`" for x in mydict.keys())
-                values = ', '.join("'" + str(x).replace('/', '_').replace("'", "") + "'" for x in mydict.values())
-                insertQuery = "INSERT INTO `tweets` ( %s ) VALUES ( %s )" % (columns, values)
+                    columns = ', '.join("`" + str(x).replace('/', '_') + "`" for x in mydict.keys())
+                    values = ', '.join("'" + str(x).replace('/', '_').replace("'", "") + "'" for x in mydict.values())
+                    insertQuery = "INSERT INTO `tweets` ( %s ) VALUES ( %s )" % (columns, values)
 
-                exec = connection.cursor().execute(insertQuery)
-                if not silent:
-                    print("✅ Record added successfully.")
-            except mysql.connector.Error as err:
-                print(f"⚠️ Error while adding record: {err}")
-                # print('Tweet object id: ',tweet['id'])
-                # print("Tried to execute: ", insertQuery)
-                print("Tried to execute: ", exec)
-                print("tweet: ", tweet)
-                pass
-            except Exception as e:
-                print("⚠️ Weird record:", tweet)
-                print(e)
-                pass
-        connection.commit()
-        print(f"✅ `{file_path}` content was successfully appended to tweets table.")
+                    exec = connection.cursor().execute(insertQuery)
+                    if not silent:
+                        print("✅ Record added successfully.")
+                except mysql.connector.Error as err:
+                    if not silent:
+                        print(f"⚠️ Error while adding record: {err}")
+                    errorCounter+=1
+                    pass
+                except Exception as e:
+                    if not silent:
+                        print("⚠️ Weird record:", e)
+                    errorCounter+=1
+                    pass
+            connection.commit()
+            processedFiles=counter+1
+            if(errorCounter==0):
+                print(f"✅ `{file_path}` content was successfully appended to tweets table.")
+            else:
+                print(f"⚠️ `{file_path}` content was processed. {errorCounter} exceptions ignored.")
+            t_end=process_time()
+            t_diff= t_end - t_start
+            acc_time+=t_diff
+            time_remaining=(len(dataFiles)-processedFiles/processedFiles)*acc_time
+            print("📄 {}/{} files are processed. {} done. ⌚ ~Time remaining : {}".format(processedFiles,len(dataFiles),round(processedFiles/len(dataFiles),2),str(datetime.timedelta(seconds=time_remaining))))
+        except Exception as e:
+            print(e)
+            print("⚠️ Bad file!")
 
 def connection_valid(connection: mysql.connector.connect) -> None:
     """
