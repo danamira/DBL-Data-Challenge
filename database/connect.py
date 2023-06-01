@@ -33,6 +33,7 @@ def makeTablesQuery() -> str:
         `language` VARCHAR(3) NULL ,
         `mentions` TEXT NULL ,
         `airlines` TEXT NULL ,
+        `sentiment` FLOAT NULL ,
         PRIMARY KEY (`id`)) ENGINE = InnoDB;
         """
     return query

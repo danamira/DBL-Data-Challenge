@@ -3,6 +3,7 @@ from typing import Generator, Dict, List, Optional
 from langdetect import detect
 from pathlib import Path
 import re
+from Functions.sentiment_function import sentiment_score
 
 airlines_list = ['klm',
                 'airfrance',
@@ -81,7 +82,8 @@ def json_cleaner(data: Dict) -> Dict:
     mentions_dict = {'mentions': mentions}
 
     airlines = find_airlines(text, airlines_list)
-    extended_tweet = {'text': text, 'language': language, 'airlines': airlines}
+    sentiment = sentiment_score(text)
+    extended_tweet = {'text': text, 'language': language, 'airlines': airlines, 'sentiment': sentiment}
 
     output.update(user_info)
     output.update(extended_tweet)
