@@ -1,35 +1,28 @@
-"""
-FUNCTION FOR SENTIMENT ANALYSIS.
-This script imports the relevant modules to perform the sentiment analysis, 
-as well as contians a function that takes a string and returns a sentiment score 
-on the form; score: int = positive - negative
-"""
-
-
-# This is a mid-though process
-# Alicia: I had to stop to run to a meeting
-# but feel free to have a look/continue
 
 def response_time(tweet_id, texts):
     """
     Calculates the response time for a tweet, def. the time for this tweet to respond to it's parent.
     :param tweet_id: the id of the tweet
     :param connection: the connection with sql.
+    :param texts: the tweets table from SQL
     :returns: the response time for a tweet id.
     """
     # Keeps track of execution time
     response_time = 'Null'
+
+    cursor.execute(f"SELECT * FROM `tweets` WHERE id ={tweet_id}")
+    tweet_info = cursor.fetchall()[0]
+
+    replied_id = tweet_info[2] #in_reply_to is the second column in the tweets table
+    self_time = tweet_info[3] #timestamp is the fourth column in the tweets table
     try:
         # Response time -> response_time
-        self_time = texts[i][timestamp]
-        replied_id = texts[i][in_reply_to]
         if replied_id != 0:
-            for tuple in texts:
-                if tuple[id] == replied_id:
-                    replied_time = tuple[timestamp]
-                    time = self_time - replied_time
-                    dict['response_time'] = time      
+            cursor.exectue(f"SELECT timestamp FROM `tweets` WHERE id={replied_id}")
+            replied_time = cursor.fetchall()[0][3]    
     except Exception:
         print('an error has occurred')
-
+    
+    response_time = self_time - replied_time
+    return response_time
 
