@@ -1,6 +1,6 @@
-
-
-
+"""
+Functions that help caluclate the response time.
+"""
 
 def response_time(in_reply_to, self_time, cursor):
     """
