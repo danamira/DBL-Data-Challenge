@@ -3,10 +3,6 @@ FUNCTION FOR SENTIMENT ANALYSIS.
 This script imports the relevant modules to perform the sentiment analysis, 
 as well as contians a function that takes a string and returns a sentiment score 
 on the form; score: int = positive - negative
-
-NOTE:
-Please look through the imports, there might be double imports when implementing elsewhere.
-
 """
 
 
@@ -40,11 +36,10 @@ def preprocess(text):
     return " ".join(new_text)
 MODEL = f"cardiffnlp/twitter-roberta-base-sentiment-latest"
 tokenizer = AutoTokenizer.from_pretrained(MODEL)
-config = AutoConfig.from_pretrained(MODEL)
-# PT
-model = AutoModelForSequenceClassification.from_pretrained(MODEL)
-#model.save_pretrained(MODEL)
 
+model = AutoModelForSequenceClassification.from_pretrained(MODEL)
+
+#model.save_pretrained(MODEL)
 
 
 def sentiment_score(text):
@@ -70,6 +65,7 @@ def sentiment_score(text):
     return score_sum
 
 
-my_text = "Hello, I am very happy!"
+# Test
+my_text = "Hello, I am happy and very sad"
 score = sentiment_score(my_text)
 print(score)
