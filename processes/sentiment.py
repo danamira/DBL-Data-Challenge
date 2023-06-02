@@ -45,3 +45,15 @@ def sentiment_score(text):
         pass
 
     return score_sum
+
+text = "This is absolutley without a doubt the worst day of my life. I hate everything."
+text = "I love everything. This is the best day of my life."
+text = "I woke up"
+
+from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
+
+analyzer = SentimentIntensityAnalyzer()
+
+def vader_score(text):
+    vs = analyzer.polarity_scores(text)
+    return vs['compound']

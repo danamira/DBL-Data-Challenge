@@ -34,6 +34,7 @@ def makeTablesQuery() -> str:
         `mentions` TEXT NULL ,
         `airlines` TEXT NULL ,
         `sentiment` FLOAT NULL ,
+        `sentiment_vader` FLOAT NULL ,
         PRIMARY KEY (`id`)) ENGINE = InnoDB;
         """
     return query
