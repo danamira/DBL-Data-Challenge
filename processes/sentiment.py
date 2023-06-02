@@ -39,17 +39,9 @@ def sentiment_score(text):
         output = model(**encoded_input)
         scores = output[0][0].detach().numpy()
         scores = softmax(scores)
-        ranking = np.argsort(scores)
-        ranking = ranking[::-1]
-        score_sum = (scores[ranking[0]] - scores[ranking[2]]) # score = positive - negative
+        score_sum = (scores[2] - scores[0]) # score = positive - negative
     except Exception as e:
         print(e)
         pass
 
     return score_sum
-
-
-# Test
-my_text = "Hello, I am happy and very sad"
-score = sentiment_score(my_text)
-print(score)
