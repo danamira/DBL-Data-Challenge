@@ -12,11 +12,13 @@ from transformers import TFAutoModelForSequenceClassification
 from transformers import AutoTokenizer, AutoConfig
 import numpy as np
 from scipy.special import softmax
+import re
+
 # Preprocess text (username and link placeholders)
 def preprocess(text):
-    new_text = re.sub(r'@\S+', '@user', data['text'])
+    new_text = re.sub(r'@\S+', '@user', text)
     return new_text
-MODEL = f"cardiffnlp/twitter-roberta-base-sentiment-latest"
+MODEL = "cardiffnlp/twitter-roberta-base-sentiment-latest"
 tokenizer = AutoTokenizer.from_pretrained(MODEL)
 
 model = AutoModelForSequenceClassification.from_pretrained(MODEL)
@@ -40,7 +42,8 @@ def sentiment_score(text):
         ranking = np.argsort(scores)
         ranking = ranking[::-1]
         score_sum = (scores[ranking[0]] - scores[ranking[2]]) # score = positive - negative
-    except Exception:
+    except Exception as e:
+        print(e)
         pass
 
     return score_sum

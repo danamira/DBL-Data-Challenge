@@ -71,8 +71,7 @@ def json_cleaner(data: Dict) -> Dict:
         return None
 
     # remove all urls
-    re.sub(r'http\S+', 'http', data['text'])
-
+    text = re.sub(r'http\S+', 'http', text)
     output = {k: v for k, v in data.items() if k in status_keys}
     user_info = {k: v for k, v in data['user'].items() if k in user_info_keys}
     # rename id to user_id
