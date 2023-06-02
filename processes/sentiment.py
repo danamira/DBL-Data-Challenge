@@ -5,20 +5,6 @@ as well as contians a function that takes a string and returns a sentiment score
 on the form; score: int = positive - negative
 """
 
-
-"""IMPORTS -> Remove when it is working
-""" 
-import sys
-#sys.path.append("../DBL-Data-Challenge")
-from database.connect import getConnection
-import pandas as pd
-import seaborn as sns
-sns.set()
-import random
-import matplotlib.pyplot as plt
-from globals import airlineIDs
-import re
-
 """MODEL IMPORTS
 """
 from transformers import AutoModelForSequenceClassification

@@ -33,7 +33,7 @@ if(command=="count:tweets"):
             DB_fun.count_tweets(connection,dataFiles,sys.argv[2]=="--silent")
     DB_fun.count_tweets(connection,dataFiles,False)
 if (command == 'insert:tweets'):
-    DB_fun.insert_tweets(connection, dataFiles)
+    DB_fun.insert_tweets(connection, dataFiles, silent=False)
 if command == 'check:connection':
     DB_fun.connection_valid(connection)
 if command=="drop:tables":
