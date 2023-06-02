@@ -95,6 +95,7 @@ def drop_tables(connection: mysql.connector.connect) -> None:
     sql="DROP TABLE tweets"
     connection.cursor().execute(sql)
     connection.commit()
+    print("✅ Tables dropped successfully.")
 
 def count_tweets(connection: mysql.connector.connect, dataFiles: List[Path]) -> None:
     """

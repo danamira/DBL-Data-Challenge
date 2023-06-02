@@ -7,7 +7,12 @@ import os
 
 
 dataFiles = [Path("data/"+file) for file in os.listdir('data')]
-
+f=open('filenames.txt','a')
+for file in os.listdir('data'):
+    f.write(file+'\n')
+f.close()
+quit()
+    
 
 try:
     connection = getConnection()
@@ -38,3 +43,6 @@ if command == 'check:connection':
     DB_fun.connection_valid(connection)
 if command=="drop:tables":
     DB_fun.drop_tables(connection)
+if command=="reset:tables":
+    DB_fun.drop_tables(connection)
+    DB_fun.make_tables(connection)

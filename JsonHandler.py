@@ -3,7 +3,7 @@ from typing import Generator, Dict, List, Optional
 from langdetect import detect
 from pathlib import Path
 import re
-from Functions.sentiment_function import sentiment_score
+from processes.sentiment_function import sentiment_score
 
 airlines_list = ['klm',
                 'airfrance',
