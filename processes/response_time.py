@@ -1,35 +1,45 @@
 """
-FUNCTION FOR SENTIMENT ANALYSIS.
-This script imports the relevant modules to perform the sentiment analysis, 
-as well as contians a function that takes a string and returns a sentiment score 
-on the form; score: int = positive - negative
+Functions that help caluclate the response time.
 """
 
-
-# This is a mid-though process
-# Alicia: I had to stop to run to a meeting
-# but feel free to have a look/continue
-
-def response_time(tweet_id, texts):
+def response_time(in_reply_to, self_time, cursor):
     """
     Calculates the response time for a tweet, def. the time for this tweet to respond to it's parent.
-    :param tweet_id: the id of the tweet
-    :param connection: the connection with sql.
+    :param in_reply_to: the id of a tweet that we want to find it's parent to.
+    :param self_time: the timestamp of the child-tweet.
+    :param cursor: a cursor with a connection to tweets database.
     :returns: the response time for a tweet id.
     """
-    # Keeps track of execution time
     response_time = 'Null'
     try:
         # Response time -> response_time
-        self_time = texts[i][timestamp]
-        replied_id = texts[i][in_reply_to]
-        if replied_id != 0:
-            for tuple in texts:
-                if tuple[id] == replied_id:
-                    replied_time = tuple[timestamp]
-                    time = self_time - replied_time
-                    dict['response_time'] = time      
+        if in_reply_to != 0:
+            cursor.exectue("SELECT timestamp FROM `tweets` WHERE id= %s" % (in_reply_to))
+            replied_time = cursor.fetchone()[0]   
     except Exception:
         print('an error has occurred')
+    
+    try:
+        response_time = self_time - replied_time
+    except Exception:
+        # In case the response time is still "Null"
+        pass
+
+    return response_time
 
 
+def response_time_id(tweet_id, cursor):
+    """
+    Calculates the response time for a tweet, def. the time for this tweet to respond to it's parent.
+    :param tweet_id: the id of the tweet.
+    :param cursor: a cursor with a connection to tweets database.
+    :returns: the response time from the response_time function.
+    """
+    
+    cursor.execute(f"SELECT in_reply_to, timestamp FROM `tweets` WHERE id ={tweet_id}")
+    tweet_info = cursor.fetchall()[0]
+
+    replied_id = tweet_info[0] #in_reply_to is the second column in the tweets table
+    self_time = tweet_info[1] #timestamp is the fourth column in the tweets table
+
+    return(response_time(replied_id, self_time, cursor))

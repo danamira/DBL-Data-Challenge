@@ -7,11 +7,7 @@ import os
 
 
 dataFiles = [Path("data/"+file) for file in os.listdir('data')]
-f=open('filenames.txt','a')
-for file in os.listdir('data'):
-    f.write(file+'\n')
-f.close()
-quit()
+
     
 
 try:
@@ -31,14 +27,16 @@ if (len(sys.argv) <= 1):
 
 command = sys.argv[1]
 
+silent=False
+if(len(sys.argv)>=3):
+    if(sys.argv[2]=='--silent'):
+        silent=True
 if (command == 'make:tables'):
     DB_fun.make_tables(connection)
 if(command=="count:tweets"):
-    if(len(sys.argv)==3):
-            DB_fun.count_tweets(connection,dataFiles,sys.argv[2]=="--silent")
-    DB_fun.count_tweets(connection,dataFiles,False)
+    DB_fun.count_tweets(connection,dataFiles,silent)
 if (command == 'insert:tweets'):
-    DB_fun.insert_tweets(connection, dataFiles)
+    DB_fun.insert_tweets(connection, dataFiles, silent=silent)
 if command == 'check:connection':
     DB_fun.connection_valid(connection)
 if command=="drop:tables":
