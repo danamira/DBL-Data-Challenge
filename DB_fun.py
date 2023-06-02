@@ -70,7 +70,7 @@ def insert_tweets(connection: mysql.connector.connect, dataFiles: List[Path],sil
             t_end=process_time()
             t_diff= t_end - t_start
             acc_time+=t_diff
-            time_remaining=(len(dataFiles)-processedFiles/processedFiles)*acc_time
+            time_remaining=(len(dataFiles)-processedFiles)*(acc_time/processedFiles)
             print("📄 {}/{} files are processed. {} done. ⌚ ~Time remaining : {}".format(processedFiles,len(dataFiles),round(processedFiles/len(dataFiles),2),str(datetime.timedelta(seconds=time_remaining))))
         except Exception as e:
             print(e)
