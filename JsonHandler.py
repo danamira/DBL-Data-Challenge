@@ -35,8 +35,8 @@ languages_list = ['ar',
                 'fr',
                 'pt',
                 'sp',
-                'it'
-                'de'
+                'it',
+                'de',
                 'hi',
                 ]
 
