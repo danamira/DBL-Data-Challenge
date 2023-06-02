@@ -1,6 +1,8 @@
 from pathlib import Path
+import os
 
 import DB_fun
+from database.connect import getConnection
 
 # Hello, my
 name = 'bot'
@@ -70,4 +72,4 @@ except Exception:
     raise
 
 DB_fun.make_tables(connection)
-DB_fun.insert_tweets(connection, dataFiles, silent=silent)
+DB_fun.insert_tweets(connection, dataFiles, silent=True)
