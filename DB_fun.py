@@ -60,7 +60,6 @@ def insert_tweets(connection: mysql.connector.connect, dataFiles: List[Path],sil
                             values+=','
                     
                     insertQuery = "INSERT INTO `tweets` ( %s ) VALUES ( %s )" % (columns, values)
-                    print(insertQuery)
                     exec = connection.cursor().execute(insertQuery)
                     if not silent:
                         print("✅ Record added successfully.")
