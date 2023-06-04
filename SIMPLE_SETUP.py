@@ -5,7 +5,7 @@ import DB_fun
 from database.connect import getConnection
 
 # Hello, my
-name = 'bot'
+name = 'dana'
 # Congratulations on your purchase of the group 6 tweet database system.
 # This system is designed to help you find tweets that are relevant to your airline.
 # Before we get started please ensure you have done the following:

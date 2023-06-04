@@ -41,13 +41,26 @@ def insert_tweets(connection: mysql.connector.connect, dataFiles: List[Path],sil
                     cleaned_tweet = JsonHandler.json_cleaner(tweet)
                     if cleaned_tweet is None:
                         continue
-                    values = tuple(cleaned_tweet.values())
+                    # values = tuple(cleaned_tweet.values())
                     mydict = cleaned_tweet
-
+            
                     columns = ', '.join("`" + str(x).replace('/', '_') + "`" for x in mydict.keys())
-                    values = ', '.join("'" + str(x).replace('/', '_').replace("'", "") + "'" for x in mydict.values())
+                    # values = ', '.join()
+                    dictkeys=list(mydict.keys())
+                    dictvalues=list(mydict.values())
+                    values=""
+                    for i,j in enumerate(dictvalues):
+                        j=str(j)
+                        j=j.replace("/","_")
+                        j=j.replace("'","")
+                        if(dictkeys[i] in ["text","coordinates","language","airlines","mentions"]):
+                            j="'"+j+"'"
+                        values+=j
+                        if(i!=(len(dictvalues)-1)):
+                            values+=','
+                    
                     insertQuery = "INSERT INTO `tweets` ( %s ) VALUES ( %s )" % (columns, values)
-
+                    print(insertQuery)
                     exec = connection.cursor().execute(insertQuery)
                     if not silent:
                         print("✅ Record added successfully.")
