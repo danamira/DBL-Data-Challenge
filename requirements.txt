@@ -5,4 +5,5 @@ langdetect
 transformers
 numpy
 scipy
+pandas
 #torch see torch website for propper install.
