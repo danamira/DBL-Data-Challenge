@@ -88,6 +88,37 @@ def mentions(mention_str: str):
     
     return user_mentions_list
 
+def identify_airline(mention_list):
+    """
+    Gets a string and identifies wheather this is an airline or not.
+    :param: mention_list: list of usernames.
+    :returns: the airline.
+    """
+    airline = 'no_airline'
+    for mention in mention_list:
+        for key in airlineIDs:
+            if mention == airlineIDs[key]:
+                airline = key
+
+    return airline
+
+def mention_count(mention_str):
+    """
+    Takes a string of a list of mentions and returns the number of mentions.
+    :param: mention_list: list of mentions IDs.
+    :returns: int value of number of mentions.
+    """
+    return len(mentions(mention_str))
+
+
+def airline():
+    """
+    Takes a string of list of airline names and identifies the airline.
+    :param: airline_list: list of airline names.
+    :returns: the airline in the mentions
+    """
+
+
 
 def length(text):
     """
