@@ -45,3 +45,21 @@ def sentiment_score(text):
         pass
 
     return score_sum
+
+def vader_score(text):
+    """ 
+    Detects the sentiment of a string of text, using the Vader model.
+    :param text: string containing tweet text 
+    :returns: sentiment score: int = positive - negative
+    """
+    from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
+    analyzer = SentimentIntensityAnalyzer()
+    score_sum = 'NI'
+    try:
+        score = analyzer.polarity_scores(text)
+        score_sum = score['compound']
+    except Exception as e:
+        print(e)
+        pass
+
+    return score_sum
