@@ -14,7 +14,7 @@ def response_time(in_reply_to, self_time, cursor):
     try:
         # Response time -> response_time
         if in_reply_to != 0:
-            cursor.exectue("SELECT timestamp FROM `tweets` WHERE id= %s" % (in_reply_to))
+            cursor.exectue("SELECT timestamp_ms FROM `tweets` WHERE id= %s" % (in_reply_to))
             replied_time = cursor.fetchone()[0]   
     except Exception:
         print('an error has occurred')
@@ -36,7 +36,7 @@ def response_time_id(tweet_id, cursor):
     :returns: the response time from the response_time function.
     """
     
-    cursor.execute(f"SELECT in_reply_to, timestamp FROM `tweets` WHERE id ={tweet_id}")
+    cursor.execute(f"SELECT in_reply_to_status_id, timestamp_ms FROM `tweets` WHERE id ={tweet_id}")
     tweet_info = cursor.fetchall()[0]
 
     replied_id = tweet_info[0] #in_reply_to is the second column in the tweets table
