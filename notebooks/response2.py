@@ -3,8 +3,6 @@ import sys
 sys.path.append("../DBL-Data-Challenge")
 from globals import airlineIDs
 import re
-from database.connect import getConnection
-
 
 def response_time_calc(replied_id, self_time, cursor):
     """
@@ -31,7 +29,6 @@ def response_time_calc(replied_id, self_time, cursor):
     
     return response_time
 
-
 def response_time_id(tweet_id, cursor):
     """
     Calculates the response time for a tweet, def. the time for this tweet to respond to it's parent.
@@ -40,11 +37,9 @@ def response_time_id(tweet_id, cursor):
     :returns: the response time from the response_time function.
     """
     replied_id = 0
-    #cursor.execute(f"SELECT in_reply_to_status_id, timestamp_ms FROM `tweets` WHERE id ={tweet_id}")
     cursor.execute("SELECT in_reply_to_status_id, timestamp_ms FROM `tweets` WHERE id = ( %s )" % (tweet_id))
     tweet_info = cursor.fetchall()[0]
     try:
-        #tweet_info = cursor.fetchall()[0]
         replied_id = tweet_info[0] #in_reply_to is the second column in the tweets table
         self_time = tweet_info[1] #timestamp is the fourth column in the tweets table
         response_time = response_time_calc(replied_id, self_time, cursor)
@@ -57,6 +52,18 @@ def response_time_id(tweet_id, cursor):
     response_time = response_time_calc(replied_id, self_time, cursor)"""
 
     return response_time
+
+def replied_sentiment(in_reply_to_status_id, cursor):
+    """
+    Takes the tweet id of the replied id and 
+    """
+    try:
+        cursor.execute("SELECT sentiment FROM `tweets` WHERE id = ( %s )" % (in_reply_to_status_id))
+        replied_sentiment = cursor.fetchone()[0]
+    except Exception:
+        replied_sentiment = 'Null'
+    
+    return replied_sentiment
 
 
 def mentions_length(mention_str: str):
