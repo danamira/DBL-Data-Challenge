@@ -9,3 +9,5 @@
 visualization.py
 /venv
 ./__pycache__
+/processes/__pycache__
+/database/__pycache__

@@ -6,7 +6,7 @@ import re
 from database.connect import getConnection
 
 
-def response_time(replied_id, self_time, cursor):
+def response_time_calc(replied_id, self_time, cursor):
     """
     Calculates the response time for a tweet, def. the time for this tweet to respond to it's parent.
     :param in_reply_to: the id of a tweet that we want to find it's parent to.
@@ -14,7 +14,7 @@ def response_time(replied_id, self_time, cursor):
     :param cursor: a cursor with a connection to tweets database.
     :returns: the response time for a tweet id.
     """
-    response_time = 0
+    response_time = 'no_reply'
 
     try:
         # Response time -> response_time
@@ -22,16 +22,14 @@ def response_time(replied_id, self_time, cursor):
             cursor.execute(f"SELECT in_reply_to_status_id, timestamp_ms FROM `tweets` WHERE id ={replied_id}")
             replied_time = cursor.fetchall()[0][1]
     except Exception:
-        print('an error has occurred')
-    
-    try:
-        response_time = self_time - replied_time
-    except Exception:
-        # In case the response time is still "Null"
         pass
 
+    try:
+        response_time = abs(self_time - replied_time)/(1000*60*60) # In hours
+    except Exception:
+        pass
+    
     return response_time
-
 
 
 def response_time_id(tweet_id, cursor):
@@ -42,14 +40,21 @@ def response_time_id(tweet_id, cursor):
     :returns: the response time from the response_time function.
     """
     replied_id = 0
-    cursor.execute(f"SELECT in_reply_to_status_id, timestamp_ms FROM `tweets` WHERE id ={tweet_id}")
+    #cursor.execute(f"SELECT in_reply_to_status_id, timestamp_ms FROM `tweets` WHERE id ={tweet_id}")
+    cursor.execute("SELECT in_reply_to_status_id, timestamp_ms FROM `tweets` WHERE id = ( %s )" % (tweet_id))
+    tweet_info = cursor.fetchall()[0]
     try:
-        tweet_info = cursor.fetchall()[0]
+        #tweet_info = cursor.fetchall()[0]
         replied_id = tweet_info[0] #in_reply_to is the second column in the tweets table
         self_time = tweet_info[1] #timestamp is the fourth column in the tweets table
-        response_time = response_time(replied_id, self_time, cursor)
+        response_time = response_time_calc(replied_id, self_time, cursor)
     except Exception:
-        response_time = 0
+        response_time = 'no_reply'
+
+    """#tweet_info = cursor.fetchall()[0]
+    replied_id = tweet_info[0] #in_reply_to is the second column in the tweets table
+    self_time = tweet_info[1] #timestamp is the fourth column in the tweets table
+    response_time = response_time_calc(replied_id, self_time, cursor)"""
 
     return response_time
 

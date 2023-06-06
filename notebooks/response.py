@@ -110,7 +110,7 @@ def response_time(replied_id, self_time, cursor):
 
 
 
-def hihihi(tweet_id, cursor):
+def response_time_id(tweet_id, cursor):
     """
     Calculates the response time for a tweet, def. the time for this tweet to respond to it's parent.
     :param tweet_id: the id of the tweet.
