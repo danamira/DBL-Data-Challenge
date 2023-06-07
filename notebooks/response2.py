@@ -53,6 +53,19 @@ def response_time_id(tweet_id, cursor):
 
     return response_time
 
+def only_client_competitor(user_id):
+    """
+    Gets a user_id and set all other than AmericanAir and BritishAirways to `Other`
+    :param: user_name: the username of the airline.
+    """
+    if user_id == 22536055:
+        username = 'AmericanAir'
+    elif user_id == 18332190:
+        username = 'BritishAirways'
+    else:
+        username = 'OtherAirline'
+
+    return username
 
 def user_id_to_user(user_id):
     """
@@ -69,6 +82,9 @@ def user_id_to_user(user_id):
             break
 
     return airline
+
+
+print(user_id_to_user(56377143))
 
 
 def replied_sentiment(in_reply_to_status_id, cursor):
