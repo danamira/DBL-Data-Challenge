@@ -2,7 +2,7 @@
 import mysql.connector 
 from database.connect import getConnection
 import config.env
-from notebooks.Response_time_functions import create_reply_time_column
+from notebooks.Response_time_functions import create_reply_time_column, update_reply_time, reply_time_creation
 # Get connection
 
 try:
@@ -19,11 +19,11 @@ airlines= {56377143 : 'KLM', 106062176:'AirFrance',18332190:"British_Airways", 2
            253340062:"SingaporeAir",218730857:"Qantas",45621423:"EtihadAirways",20626359:"VirginAtlantic"}
 
 cursor = connection.cursor()
-query_columns = ['id', 'text', 'in_reply_to_status_id', 'timestamp_ms', 'user_id', 'language', 'mentions', 'airlines',
-                 'sepntiment']
-query="""SELECT id, , in_reply_to_status_id, timestamp_ms, user_id, language, mentions, airlines, sentiment
-        FROM tweets"""
+query_columns = ['id', 'in_reply_to_status_id', 'timestamp_ms']
+query="""SELECT id, in_reply_to_status_id, timestamp_ms FROM tweets ORDER BY timestamp_ms DESC"""
 cursor.execute(query) #get the tweets table into the variable tweets
 tweets = cursor.fetchall()
 
-create_reply_time_column(cursor)
+create_reply_time_column(cursor) #creat the column in the table
+
+reply_time_creation(cursor, connection, tweets) #add the values to the column.
