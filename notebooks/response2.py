@@ -53,6 +53,24 @@ def response_time_id(tweet_id, cursor):
 
     return response_time
 
+
+def user_id_to_user(user_id):
+    """
+    Gets a user id and identifies what airline it is, or of it is Other.
+    :param: user_id: the user of of the tweet.
+    :returns: the user name.
+    """
+    # Idetify the airline
+    airline = 'not_airline'
+    
+    for key in airlineIDs:
+        if user_id == airlineIDs[key]:
+            airline = key
+            break
+
+    return airline
+
+
 def replied_sentiment(in_reply_to_status_id, cursor):
     """
     Takes the tweet id of the replied id and 
