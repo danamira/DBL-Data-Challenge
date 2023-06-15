@@ -19,7 +19,7 @@ def update_reply_time (cursor, tweet: int, tweettime = int) -> None:
         
         time_diff = replier_ms-tweettime #the time difference between the original tweet and the reply
 
-        query = f"UPDATE `tweets` SET reply_time={time_diff} WHERE id={tweet}" 
+        query = f"UPDATE `tweets` SET reply_time={time_diff} WHERE id={replier}" 
 
         cursor.execute(query) #update the tweets table.
     return None
