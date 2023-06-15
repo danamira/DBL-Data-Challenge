@@ -5,8 +5,8 @@ def create_sentim_table (cursor) -> None:
     output: nothing."""
     database = config.env.getConfig('DB_DATABASE')
 
-    cursor.execute(f"""CREATE TABLE `{database}`.`binned_sentiment`(begin_id BIGINT NOT NULL, end_id BIGINT NOT NULL, cID MEDIUMINT NOT NULL, avg_sentiment DECIMAL(7,1),
-                   PRIMARY KEY(begin_id, cID))""")
+    cursor.execute(f"""CREATE TABLE `{database}`.`binned_sentiment`(begin_id BIGINT NOT NULL, end_id BIGINT NOT NULL, break_id BIGINT NOT NULL, break_position SMALLINT,
+                   cID MEDIUMINT NOT NULL, avg_sentiment DECIMAL(7,1), break_airline VARCHAR(20), PRIMARY KEY(begin_id, cID))""")
     return None
 
 import mysql.connector 
