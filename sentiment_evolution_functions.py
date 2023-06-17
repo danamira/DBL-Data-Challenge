@@ -115,7 +115,7 @@ def fill_bin_table (db, cursor) -> None:
         if runs % round(n/5) == 0:
             db.commit() #commit the database once in a while.
         runs += 1
-        db.commit()
+    db.commit()
     return None
 
 
