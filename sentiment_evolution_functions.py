@@ -60,6 +60,7 @@ def insert_bins(cursor, tweets, conv_id, bin_id, bin_pos, bin_sentiment, conv_le
                                     {bin_sentiment})""")
                 bin_id += 1
                 bin_pos += 1 #Increment these values to keep them accurate
+                bin_sentiment = 0 #And reset the sentiment per bin, since we now enter a new bin
             
         elif tweet_position != conv_length:
             bin_sentiment += tweet_sentiment #keep track of the sum of sentiments in a bin
@@ -74,6 +75,7 @@ def insert_bins(cursor, tweets, conv_id, bin_id, bin_pos, bin_sentiment, conv_le
             #Here we write 0 for break_id and break_airline, since there is no breaking tweet, which we define as an airline
             #tweet that splits the conversation, we write break_position as Length of conversation though, to allow searching easier
 
+            bin_sentiment = 0 #reset the bin_sentiment
             bin_id += 1 #Increment bin_id, since it will continue for all conversations, bin_pos is not needed since this is
                         #the last tweet of the conversation
     return bin_id
