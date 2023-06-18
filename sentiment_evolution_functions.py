@@ -33,6 +33,9 @@ def insert_bins(cursor, tweets, conv_id, bin_id, bin_pos, bin_sentiment, conv_le
             a list of all tweets in a conversation with length >2
             the id of said conversation
             bin_id the current bin_id to give to the next bin created
+            bin_pos: the number of this bin in thsi conversation (so the second bin of a conversation has bin_pos==2)
+            bin_sentiment: 0
+            conv_length: the length of the conversation in which these tweets participate.
 
     output: the bin_id for the next bin
             """
@@ -119,7 +122,5 @@ def fill_bin_table (db, cursor) -> None:
     return None
 
 
-
-        
             
 
