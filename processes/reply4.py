@@ -28,26 +28,29 @@ def reply_set_up():
     # calculate the sentiment change between 'before-and-after' airline reply, sentiment_change
     # (and, gets topic) 
     query = """
-    SELECT
-        break.break_airline as airline, 
-        tweets.reply_time/(1000*60*60) as reply_time, 
-        (sentiment.sentiment_sum - break.sentiment_sum) as sentiment_change
+    SELECT DISTINCT
+        break.break_airline AS airline, 
+        tweets.reply_time/(1000*60*60) AS reply_time, 
+        (sentiment.sentiment_sum - break.sentiment_sum) AS sentiment_change
     FROM 
         tweets, 
 	    (SELECT break_id, break_airline, sentiment_sum, cID, bin_position 
             FROM binned_sentiment 
-            WHERE break_id != '0' as break,
+            WHERE break_id != '0')
+            AS break,
 	    (SELECT sentiment_sum, cID, bin_position 
             FROM binned_sentiment 
-            WHERE break_id != '0' as sentiment
-    WHERE tweets.id = break.break_id and
-        sentiment.cID = break.cID and
+            WHERE break_id != '0')
+            AS sentiment
+    WHERE tweets.id = break.break_id AND
+        sentiment.cID = break.cID AND
         sentiment.bin_position = (break.bin_position + 1)
     """
     
     # Query data and store as a dataframe
     cursor.execute(query) 
-    df_tweets = pd.DataFrame(cursor.fetchall())
+    df_tweets = pd.DataFrame(cursor.fetchall(), columns=['airline', 'reply_time', 'sentiment_change'])
+
 
     # Close connection
     cursor.close()
