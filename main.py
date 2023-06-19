@@ -9,7 +9,7 @@ import os
 dataFiles = [Path("data/"+file) for file in os.listdir('data')]
 
     
-
+ 
 try:
     connection = getConnection()
 except Exception:
