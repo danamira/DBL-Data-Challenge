@@ -29,28 +29,70 @@ def reply_set_up():
     # (and, gets topic) 
     query = """
     SELECT DISTINCT
-        break.break_airline AS airline, 
-        tweets.reply_time/(1000*60*60) AS reply_time, 
-        (sentiment.sentiment_sum - break.sentiment_sum) AS sentiment_change
+	break.break_airline AS airline, 
+	tweets.reply_time/(1000*60*60) AS reply_time, 
+	(sentiment.sentiment_sum - break.sentiment_sum) AS sentiment_change,
+	topics.canceling,
+	topics.boarding,
+	topics.stuck,
+	topics.booking,
+	topics.customers,
+	topics.dm,
+	topics.waiting,
+	topics.money,
+	topics.information,
+	topics.staff,
+	topics.baggage
     FROM 
         tweets, 
-	    (SELECT break_id, break_airline, sentiment_sum, cID, bin_position 
+        (SELECT break_id, break_airline, sentiment_sum, cID, bin_position 
             FROM binned_sentiment 
             WHERE break_id != '0')
             AS break,
-	    (SELECT sentiment_sum, cID, bin_position 
+        (SELECT sentiment_sum, cID, bin_position 
             FROM binned_sentiment 
             WHERE break_id != '0')
-            AS sentiment
+            AS sentiment,
+        (SELECT 
+            part_of.cID,
+            sum(t.canceling) AS canceling, 
+            sum(t.boarding) AS boarding, 
+            sum(t.stuck) AS stuck, 
+            sum(t.booking) AS booking, 
+            sum(t.customers) AS customers, 
+            sum(t.dm) AS dm, 
+            sum(t.waiting) AS waiting, 
+            sum(t.money) AS money, 
+            sum(t.information) AS information, 
+            sum(t.staff) AS staff, 
+            sum(t.baggage) AS baggage
+        FROM tweets AS t, part_of
+        WHERE t.id = part_of.tID
+        GROUP BY part_of.cID)
+        AS topics
     WHERE tweets.id = break.break_id AND
         sentiment.cID = break.cID AND
-        sentiment.bin_position = (break.bin_position + 1)
+        sentiment.bin_position = (break.bin_position + 1) AND
+        topics.cID = break.cID
     """
     
     # Query data and store as a dataframe
     cursor.execute(query) 
-    df_tweets = pd.DataFrame(cursor.fetchall(), columns=['airline', 'reply_time', 'sentiment_change'])
-
+    df_tweets = pd.DataFrame(cursor.fetchall(), columns=['airline', 
+                                                         'reply_time', 
+                                                         'sentiment_change', 
+                                                         'canceling',
+                                                         'boarding',
+                                                         'stuck',
+                                                         'booking',
+                                                         'customers',
+                                                         'dm',
+                                                         'waiting',
+                                                         'money',
+                                                         'information',
+                                                         'staff',
+                                                         'baggage'])
+ 
 
     # Close connection
     cursor.close()
