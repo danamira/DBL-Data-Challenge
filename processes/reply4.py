@@ -30,7 +30,7 @@ def reply_set_up():
     query = """
     SELECT DISTINCT
 	break.break_airline AS airline, 
-	tweets.reply_time/(1000*60*60) AS reply_time, 
+	ROUND(tweets.reply_time/(1000*60), 0) AS reply_time, 
 	(sentiment.sentiment_mean - break.sentiment_mean) AS sentiment_change,
 	topics.canceling,
 	topics.boarding,
