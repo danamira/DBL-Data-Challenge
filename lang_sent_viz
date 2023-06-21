@@ -1,0 +1,50 @@
+# import pandas lib as pd
+import pandas as pd
+import numpy as np
+# read by default 1st sheet of an excel file
+dataframe1 = pd.read_csv('output/sentiment_per_language.csv')
+df=pd.DataFrame(dataframe1)
+df['sentiment'] = df['sentiment'].astype(str)
+df['sentiment'] = df['sentiment'].str.strip("[]")
+df['sentiment'] = df['sentiment'].str.split(",")
+
+ar=df.loc[0,'sentiment']
+en=df.loc[1,'sentiment']
+fr=df.loc[2,'sentiment']
+pt=df.loc[3,'sentiment']
+es=df.loc[4,'sentiment']
+it=df.loc[5,'sentiment']
+de=df.loc[6,'sentiment']
+hi=df.loc[7,'sentiment']
+ar=list(np.float_(ar))
+en=list(np.float_(en))
+fr=list(np.float_(fr))
+pt=list(np.float_(pt))
+#ar=list(np.float_(es))
+it=list(np.float_(it))
+de=list(np.float_(de))
+hi=list(np.float_(hi))
+
+name_list=['ar','en','fr','pt','it','de','hi']
+lang_list=[ar,en,fr,pt,it,de,hi]
+mean_list=[]
+var_list=[]
+std_dev_list=[]
+for i in lang_list:
+    x1=np.mean(i)
+    x2=np.var(i)
+    x3=np.std(i)
+    mean_list.append(x1)
+    var_list.append(x2)
+    std_dev_list.append(x3)
+
+df_lang_sent = pd.DataFrame(list(zip(name_list, mean_list,var_list,std_dev_list)),
+               columns =['Language', 'Mean','Variance','Standard_deviation'])
+
+# save the dataframe to a csv file
+df_lang_sent.to_csv(r'output/Language_statistics.csv', index=False)
+
+print(df_lang_sent)
+
+
+

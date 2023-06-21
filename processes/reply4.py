@@ -30,8 +30,8 @@ def reply_set_up():
     query = """
     SELECT DISTINCT
 	break.break_airline AS airline, 
-	tweets.reply_time/(1000*60*60) AS reply_time, 
-	(sentiment.sentiment_sum - break.sentiment_sum) AS sentiment_change,
+	ROUND(tweets.reply_time/(1000*60), 0) AS reply_time, 
+	(sentiment.sentiment_mean - break.sentiment_mean) AS sentiment_change,
 	topics.canceling,
 	topics.boarding,
 	topics.stuck,
@@ -45,11 +45,11 @@ def reply_set_up():
 	topics.baggage
     FROM 
         tweets, 
-        (SELECT break_id, break_airline, sentiment_sum, cID, bin_position 
+        (SELECT break_id, break_airline, sentiment_sum/tweet_count as sentiment_mean, cID, bin_position 
             FROM binned_sentiment 
             WHERE break_id != '0')
             AS break,
-        (SELECT sentiment_sum, cID, bin_position 
+        (SELECT sentiment_sum/tweet_count as sentiment_mean, cID, bin_position 
             FROM binned_sentiment 
             WHERE break_id != '0')
             AS sentiment,
