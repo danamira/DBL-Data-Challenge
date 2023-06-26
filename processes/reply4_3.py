@@ -91,8 +91,8 @@ def reply_set_up():
     
     # Query data and store as a dataframe
     cursor.execute(query) 
-    df_tweets = pd.DataFrame(cursor.fetchall(), columns=['airline', 
-                                                         'timestamp_ms',
+    df_tweets = pd.DataFrame(cursor.fetchall(), columns=['airline',
+                                                         'timestamp_ms', 
                                                          'reply_time',
                                                          'sentiment_change', 
                                                          'sentiment1', 
