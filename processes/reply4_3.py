@@ -40,6 +40,7 @@ def reply_set_up():
     query = """
     SELECT DISTINCT
 	break.break_airline AS airline, 
+    tweets.timestamp_ms,
 	ROUND(tweets.reply_time/(1000*60), 0) AS reply_time, 
 	null,
     break.sentiment_mean AS sentiment1,
@@ -91,6 +92,7 @@ def reply_set_up():
     # Query data and store as a dataframe
     cursor.execute(query) 
     df_tweets = pd.DataFrame(cursor.fetchall(), columns=['airline', 
+                                                         'timestamp_ms',
                                                          'reply_time',
                                                          'sentiment_change', 
                                                          'sentiment1', 
