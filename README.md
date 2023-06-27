@@ -10,3 +10,9 @@ Here you can find the code used to store, organize, extract and analyze informat
 4. Once in project's root directory, try `python main.py make:tables` in order to create the table used for storing tweets.
 5. Use the `dataFiles` variable in `main.py` to configure the JSON files which their content needs to inserted to the database.
 6. Once the `dataFiles` variable is properly set, run `python main.py insert:tweets` in order to append the tweets to the database.
+
+## Next steps
+
+
+1. Run the `word_clustering.ipynb` notebook to create the categories in the database.
+2. All the graphs can be found in `FINAL VISUALISATIONS.ipynb` notebook.
